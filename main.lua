@@ -26,6 +26,9 @@ require 'Bird'
 -- pipe class we've written
 require 'Pipe'
 
+-- class representing pair of pipes together
+require 'PipePair'
+
 -- physical screen dimensions
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
@@ -51,11 +54,14 @@ local BACKGROUND_LOOPING_POINT = 413
 -- our bird sprite
 local bird = Bird()
 
--- our table of spawning Pipes
-local pipes = {}
+-- our table of spawning PipePairs
+local pipePairs = {}
 
 -- our timer for spawning pipes
 local spawnTimer = 0
+
+-- initialize our last recorder Y value for a gap placement to base other gaps off of
+local lastY = -PIPE_HEIGHT + math.random(80) + 20
 
 function love.load()
     -- initialize our nearest-neighbor filter
@@ -111,7 +117,14 @@ function love.update(dt)
 
     -- spawn a new Pipe if the timer is past 2 seconds
     if spawnTimer > 2 then
-        table.insert(pipes, Pipe())
+        -- modify the last Y coordinate we placed so pipe gaps aren't too far apart
+        -- no higher than 10 pizels below to the top of the screen,
+        -- and no lower than a gap length (90 pixels) from the bottom
+        local y = math.max(-PIPE_HEIGHT + 10,
+            math.min(lastY + math.random(-20, 20), VIRTUAL_HEIGHT - 90 - PIPE_HEIGHT))
+        lastY = y
+
+        table.insert(pipePairs, PipePair(y))
         spawnTimer = 0
     end
 
@@ -119,12 +132,18 @@ function love.update(dt)
     bird:update(dt)
 
     -- for every pipe in the scene...
-    for k, pipe in pairs(pipes) do
-        pipe:update(dt)
+    for _, pair in pairs(pipePairs) do
+        pair:update(dt)
+    end
 
-        -- if pipe is no longer visible past left edge, remove it from scene
-        if pipe.x < -pipe.width then
-            table.remove(pipes, k)
+    -- remove any flagged pipes
+    -- we need this second loop, rather than deleting in the previous loop, because
+    -- modifying the table in-place without explicit keys will result in skipping the
+    -- next pipe, since all implicit keys (numerical indices) are automatically shifted
+    -- down after a table removal
+    for k, pair in pairs(pipePairs) do
+        if pair.remove then
+            table.remove(pipePairs, k)
         end
     end
 
@@ -144,7 +163,7 @@ function love.draw()
     love.graphics.draw(background, -backgroundScroll, 0)
 
     -- render all the pipes in our scene
-    for _, pipe in pairs(pipes) do
+    for _, pipe in pairs(pipePairs) do
         pipe:render()
     end
 
