@@ -11,6 +11,7 @@
 Bird = Class{}
 
 local GRAVITY = 10
+local JUMP_HEIGHT = GRAVITY / 5
 local LEFT_TOP_OFFSET = 2
 local RIGHT_BOTTOM_OFFSET = 4
 
@@ -46,7 +47,7 @@ function Bird:update(dt)
 
     -- add a sudden burst of negative gravity if we hit the space bar
     if love.keyboard.wasPressed('space') then
-        self.dy = -(GRAVITY / 4)
+        self.dy = -JUMP_HEIGHT
     end
 
     -- apply current velocity to Y position
