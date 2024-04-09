@@ -11,6 +11,8 @@
 Bird = Class{}
 
 local GRAVITY = 10
+local LEFT_TOP_OFFSET = 2
+local RIGHT_BOTTOM_OFFSET = 4
 
 function Bird:init()
     -- load bird image from disk and assign its width and height
@@ -24,6 +26,18 @@ function Bird:init()
 
     -- Y velocity; gravity
     self.dy = 0
+end
+
+function Bird:collides(pipe)
+    -- both offsets are used to shrink the bounding box to give the player
+    -- a little of a leeway with the collision
+    if (self.x + LEFT_TOP_OFFSET) + (self.width - RIGHT_BOTTOM_OFFSET) >= pipe.x and self.x + LEFT_TOP_OFFSET <= pipe.x + PIPE_WIDTH then
+        if (self.y + LEFT_TOP_OFFSET) + (self.height - RIGHT_BOTTOM_OFFSET) >= pipe.y and self.y + LEFT_TOP_OFFSET <= pipe.y + PIPE_HEIGHT then
+            return true
+        end
+    end
+
+    return false
 end
 
 function Bird:update(dt)
