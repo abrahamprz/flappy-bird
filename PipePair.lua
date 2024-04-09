@@ -11,7 +11,7 @@
 PipePair = Class{}
 
 -- size of the gap between pipes
-local GAP_HEIGHT = 90
+local GAP_HEIGHT = 140
 
 function PipePair:init(y)
     -- initialize pipes past the end of the screen
@@ -28,6 +28,9 @@ function PipePair:init(y)
 
     -- whether this pipe pair is ready to be removed from the scene
     self.remove = false
+
+    -- whether or not this pair of pipes has been scored
+    self.scored = false
 end
 
 function PipePair:update(dt)
