@@ -4,7 +4,7 @@ This code follows the Flappy Bird project from the CS50’s Introduction to Game
 
 ## Objectives
 - [x] Read and understand all of the Flappy (Fifty!) Bird source code from Lecture 1.
-- [ ] Make pipe gaps slightly random.
+- [x] Make pipe gaps slightly random.
 - [ ] Make pipe intervals slightly random.
 - [ ] Give the player a medal for their performance, along with their score.
 - [ ] Implement a pause feature, just in case life gets in the way of jumping through pipes!

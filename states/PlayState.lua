@@ -42,8 +42,10 @@ function PlayState:update(dt)
             math.min(self.lastY + math.random(-20, 20), VIRTUAL_HEIGHT - 90 - PIPE_HEIGHT))
         self.lastY = y
 
+        local gapHeight = math.random(90, 140)
+
         -- add a new pipe pair at the end of the screen at our new Y
-        table.insert(self.pipePairs, PipePair(y))
+        table.insert(self.pipePairs, PipePair(y, gapHeight))
 
         -- reset timer
         self.timer = 0
