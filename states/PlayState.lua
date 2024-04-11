@@ -21,6 +21,7 @@ function PlayState:init()
     self.bird = Bird()
     self.pipePairs = {}
     self.timer = 0
+    self.pipeInterval = 2
 
     -- now keep track of our score
     self.score = 0
@@ -33,8 +34,10 @@ function PlayState:update(dt)
     -- update timer for pipe spawning
     self.timer = self.timer + dt
 
-    -- spawn a new pipe pair every second and a half
-    if self.timer > 2 then
+    if self.timer > self.pipeInterval then
+        -- spawn a new pipe pair every random interval
+        self.pipeInterval = math.random(2, 3)
+
         -- modify the last Y coordinate we placed so pipe gaps aren't too far apart
         -- no higher than 10 pixels below the top edge of the screen,
         -- and no lower than a gap length (90 pixels) from the bottom

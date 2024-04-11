@@ -72,6 +72,8 @@ function love.load()
     -- app window title
     love.window.setTitle("CS50's Flappy Bird")
 
+    math.randomseed(os.time())
+
     -- initialize our nice-looking retro text fonts
     smallFont = love.graphics.newFont('font.ttf', 8)
     mediumFont = love.graphics.newFont('flappy.ttf', 14)
