@@ -1,4 +1,4 @@
-# Pong
+# Flappy Bird
 This code follows the Flappy Bird project from the CS50’s Introduction to Game Development course.
 
 
