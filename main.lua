@@ -62,8 +62,6 @@ local BACKGROUND_LOOPING_POINT = 413
 -- point at which we should loop our ground back to X 0
 local GROUND_LOOPING_POINT = 514
 
--- scrolling variable to pause the game when we collide with a pipe
-local scrolling = true
 
 function love.load()
     -- initialize our nearest-neighbor filter
@@ -116,6 +114,8 @@ function love.load()
     love.keyboard.keysPressed = {}
 
     love.mouse.buttonsPressed = {}
+
+    paused = false
 end
 
 function love.resize(w, h)
@@ -128,6 +128,16 @@ function love.keypressed(key)
 
     if key == 'escape' then
         love.event.quit()
+    end
+
+    if key == 'p' then
+        if paused then
+            paused = false
+            sounds['music']:play()
+        else
+            paused = true
+            sounds['music']:pause()
+        end
     end
 end
 
@@ -149,6 +159,11 @@ function love.mouse.wasPressed(button)
 end
 
 function love.update(dt)
+    -- return if paused and if the gamestate is play
+    if paused and gStateMachine:getCurrentStateName() == 'play' then
+        return
+    end
+
     -- scroll background by preset speed * dt, looping back to 0 after the looping point
     backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
 
@@ -178,6 +193,11 @@ function love.draw()
     -- draw the ground on top of the background, toward the bottom of the screen,
     -- at its negative looping point
     love.graphics.draw(ground, -groundScroll, VIRTUAL_HEIGHT - 16)
+
+    love.graphics.setFont(flappyFont)
+    if paused then
+        love.graphics.printf("PAUSED", 0, 100, VIRTUAL_WIDTH, 'center')
+    end
 
     push:finish()
 end
