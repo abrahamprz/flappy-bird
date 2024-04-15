@@ -18,6 +18,7 @@ BIRD_WIDTH = 38
 BIRD_HEIGHT = 24
 
 function PlayState:init()
+    paused = false
     self.bird = Bird()
     self.pipePairs = {}
     self.timer = 0
