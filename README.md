@@ -7,7 +7,7 @@ This code follows the Flappy Bird project from the CS50’s Introduction to Game
 - [x] Make pipe gaps slightly random.
 - [x] Make pipe intervals slightly random.
 - [x] Give the player a medal for their performance, along with their score.
-- [ ] Implement a pause feature, just in case life gets in the way of jumping through pipes!
+- [x] Implement a pause feature, just in case life gets in the way of jumping through pipes!
 
 
 
